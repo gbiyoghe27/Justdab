@@ -2,8 +2,6 @@ name: Check - backend
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
@@ -19,8 +17,6 @@ jobs:
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
-        with:
-          lfs: 'true'
 
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4
@@ -32,8 +28,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Execute Gradle Tests
-        run: |
-          ./gradlew test
+        run: ./gradlew test
 
       - name: Store Tests Reports
         if: always()
@@ -42,12 +37,9 @@ jobs:
           name: backend tests
           path: |
             **/build/reports/
-            **/build/test-results/   
-
+            **/build/test-results/
       - name: Execute Gradle build
-        run: |
-                   
-          ./gradlew build
+        run: ./gradlew build
 
       - name: Store Production Artifact
         uses: actions/upload-artifact@v4
